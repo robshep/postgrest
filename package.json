@@ -1,0 +1,17 @@
+{
+  "name": "postgrest",
+  "version": "1.0.0",
+  "description": "Sample Postgres/JSON Web Application",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "Rob Shepherd (DataCymru Ltd)",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "pg": "^6.1.2",
+    "pg-promise": "^5.6.2",
+    "restify": "^4.3.0"
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Project</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container">
+            <a class="navbar-brand" href="#">Project</a>
+            <div class="collapse navbar-collapse" id="navbarExample">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <button id="myButton" class="btn btn-outline-success my-2 my-sm-0" name="clear" type="submit">button</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div id="content" class="col-sm-4">
+                <h4>Schemas</h4>
+                <ul id="schemas"></ul>
+                <div id="tablesContainer" style="display:none">
+                    <h4>Tables</h4>
+                    <h5>Schema: <span id="schemaName"></span></h5>
+                    <ul id="tables"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha256-gL1ibrbVcRIHKlCO5OXOPC/lZz/gpdApgQAzskqqXp8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.83/jsrender.js"></script>
+    <script>
+
+        (function(){
+            // do something
+            
+            // document.ready
+            $(function(){
+
+                // setup click handler for schema links
+                $("ul#schemas").on("click", "a.schemaAction", function(e){
+                    var list = $("ul#tables");
+                    list.empty();
+                    var schemaName = $(e.target).data("schema");
+                    $.get("/tables/" + schemaName).then(function(resp){
+
+                        $("div#tablesContainer").show();
+                        $("span#schemaName").text(schemaName + " (" + resp.data.length + ")");
+
+                        $.each(resp.data, function(index, it){
+                            var el = $("<li>").text(it.table);
+                            list.append(el);
+                        })
+                    })
+
+                    return false;
+                });
+
+                // load schemas
+                $.get("/schemas").done(function(resp){
+                    var list = $("ul#schemas")
+                    list.empty();
+                    $.each(resp['data'], function(index, it){
+                        console.log(it)
+                        var el = $("<li>").append($("<a />", {href:'#', class: 'schemaAction', 'data-schema': it.schema}).text(it.schema));
+                        $(list).append(el);
+                    })
+                    $("ul#schemas").append(list);
+                })
+            })
+
+        })();
+    </script>
+</body>
+</html>
