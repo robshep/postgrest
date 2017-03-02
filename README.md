@@ -8,8 +8,8 @@ Sample boilerplate application to get JSON out of Postgres using Restify on Node
 
 * (Optional) nvm use
 * npm install
-* node app/index.js <web-server-port> <postgres-conn-url>
-* open http://localhost:<web-server-port>
+* node app/index.js `<web-server-port>` `<postgres-conn-url>`
+* open http://localhost:`<web-server-port>`
 
 # Yields...
 
